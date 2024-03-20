@@ -4,6 +4,7 @@ use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\ClientCredentialsController;
+use App\Http\Controllers\OrderController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\SavedController;
 use Illuminate\Http\Request;
@@ -29,21 +30,23 @@ use Illuminate\Support\Facades\Route;
 / Authentication
 /----------------------------------------------------------------------------
 */
-Route::post('register', RegisterController::class);
-Route::post('login', LoginController::class);
-
-Route::get('/clientCredentials', [ClientCredentialsController::class, 'createCCredentials']);
-
-// create for csrf token
-Route::get('/sanctum/csrf-cookie', function (Request $request) {
-    return response()->json(
-        [
-            'code' => 200,
-            'status' => 'success',
-            'token' => $request->session()->token(), // 'token' => $request->session()->token(),
-        ]
-    );
+Route::group(['prefix' => 'auth'], function () {
+    Route::post('register', RegisterController::class);
+    Route::post('login', LoginController::class);
+    Route::get('clientCredentials', [ClientCredentialsController::class, 'createCCredentials']);
+    // create for csrf token
+    Route::get('sanctum/csrf-cookie', function (Request $request) {
+        return response()->json(
+            [
+                'code' => 200,
+                'status' => 'success',
+                'token' => $request->session()->token(), // 'token' => $request->session()->token(),
+            ]
+        );
+    });
 });
+
+
 
 
 /**
@@ -52,19 +55,30 @@ Route::get('/sanctum/csrf-cookie', function (Request $request) {
  *
  */
 
-
-Route::get('/getProduct', [ProductController::class, 'getProduct']);
+// product
+Route::group(['prefix' => 'product'], function () {
+    Route::get('/data', [ProductController::class, 'getProduct']);
+    Route::post('/detail', [ProductController::class, 'detailProduct']);
+});
 
 // cart
-Route::get('/dataCart', [CartController::class, 'dataCart']);
-Route::post('/addCart', [CartController::class, 'addCart']);
-Route::post('/deleteCart', [CartController::class, 'deleteCart']);
-Route::post('/updateQty', [CartController::class, 'updateQty']);
+Route::group(['prefix' => 'cart'], function () {
+    Route::get('/data', [CartController::class, 'dataCart']);
+    Route::post('/add', [CartController::class, 'addCart']);
+    Route::post('/delete', [CartController::class, 'deleteCart']);
+    Route::post('/quantityUpdate', [CartController::class, 'updateQty']);
+});
 
-// saved
-Route::get('/getSaved', [SavedController::class, 'getSaved']);
-Route::post('/addSaved', [SavedController::class, 'addSaved']);
-Route::post('/deleteSaved', [SavedController::class, 'deleteSaved']);
+// wishlist
+Route::group(['prefix' => 'wishlist'], function () {
+    Route::get('/data', [SavedController::class, 'getSaved']);
+    Route::post('/add', [SavedController::class, 'addSaved']);
+    Route::post('/delete', [SavedController::class, 'deleteSaved']);
+});
 
+// orders
+Route::group(['prefix' => 'order'], function () {
+    Route::get('/history', [OrderController::class, 'getOrder']);
+    Route::post('/add', [OrderController::class, 'addOrder']);
 
-// order
+});

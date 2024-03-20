@@ -43,7 +43,7 @@ class RegisterController extends Controller
                 'myApp',
                 ['*'],
                 Carbon::now()->addHours(1)
-            )->plainTextToken,
+            )->accessToken->token,
 
         ];
 

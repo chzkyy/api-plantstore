@@ -22,6 +22,14 @@ class ClientCredentialsController extends Controller
 
         // ambil authorization dari header
         $AuthHeader = $request->header('Authorization');
+        if (!$AuthHeader) {
+            $response = [
+                'status' => 'Failed',
+                'message' => 'Unauthorized Access',
+            ];
+
+            return response()->json($response, 401);
+        }
 
         // ambil base64 dari signature
         $AuthHeader = explode(' ', $AuthHeader);

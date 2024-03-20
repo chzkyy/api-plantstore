@@ -20,6 +20,13 @@ class SavedController extends Controller
     {
         // create auth with bearer token
         $auth = $request->header('Authorization');
+        if(!$auth){
+            return response()->json([
+                'code' => 401,
+                'status' => 'error',
+                'message' => 'Unauthorized'
+            ], 401);
+        }
         $auth = explode(' ', $auth);
         $auth = $auth[1];
 
@@ -32,7 +39,7 @@ class SavedController extends Controller
                 'code' => 401,
                 'status' => 'error',
                 'message' => 'Unauthorized'
-            ]);
+            ], 401);
         } else {
             // chcek expired token
             $expired = $checkAuth->expires_at;
@@ -43,8 +50,7 @@ class SavedController extends Controller
                     'code' => 401,
                     'status' => 'error',
                     'message' => 'Token Expired'
-
-                ]);
+                ], 401);
             } else {
                 // mengeluarkan data cart
                 $user_id    = $checkAuth->tokenable_id;
@@ -52,7 +58,13 @@ class SavedController extends Controller
                 $dataResult = [];
 
                 // dd($dataDb->toArray());
-                if ($dataDb != '[]') {
+                if($dataDb->isEmpty()){
+                    return response()->json([
+                        'code' => 200,
+                        'status' => 'success',
+                        'message' => 'Data wishlist is empty'
+                    ]);
+                }else{
                     foreach ($dataDb as $key => $value) {
                         $dataResult[$key]['id'] = $value->id;
                         $dataResult[$key]['product_id'] = $value->products->id;
@@ -70,12 +82,6 @@ class SavedController extends Controller
                         'status' => 'success',
                         'data' => $dataResult
                     ]);
-                } else {
-                    return response()->json([
-                        'code' => 400,
-                        'status' => 'error',
-                        'message' => 'Data not found'
-                    ]);
                 }
             }
         }
@@ -86,6 +92,13 @@ class SavedController extends Controller
     {
         // create auth with bearer token
         $auth = $request->header('Authorization');
+        if(!$auth){
+            return response()->json([
+                'code' => 401,
+                'status' => 'error',
+                'message' => 'Unauthorized'
+            ], 401);
+        }
         $auth = explode(' ', $auth);
         $auth = $auth[1];
 
@@ -98,7 +111,7 @@ class SavedController extends Controller
                 'code' => 401,
                 'status' => 'error',
                 'message' => 'Unauthorized'
-            ]);
+            ], 401);
         } else {
             // chcek expired token
             $expired = $checkAuth->expires_at;
@@ -109,8 +122,7 @@ class SavedController extends Controller
                     'code' => 401,
                     'status' => 'error',
                     'message' => 'Token Expired'
-
-                ]);
+                ], 401);
             } else {
                 // mengeluarkan data cart
                 $user_id        = $checkAuth->tokenable_id;
@@ -122,7 +134,7 @@ class SavedController extends Controller
                         'code' => 400,
                         'status' => 'error',
                         'message' => 'Product already saved'
-                    ]);
+                    ], 400);
                 } else {
                     $data = new Save();
                     $data->user_id = $user_id;
@@ -143,6 +155,13 @@ class SavedController extends Controller
     {
         // create auth with bearer token
         $auth = $request->header('Authorization');
+        if(!$auth){
+            return response()->json([
+                'code' => 401,
+                'status' => 'error',
+                'message' => 'Unauthorized'
+            ], 401);
+        }
         $auth = explode(' ', $auth);
         $auth = $auth[1];
 
@@ -155,7 +174,7 @@ class SavedController extends Controller
                 'code' => 401,
                 'status' => 'error',
                 'message' => 'Unauthorized'
-            ]);
+            ], 401);
         } else {
             // chcek expired token
             $expired = $checkAuth->expires_at;
@@ -166,8 +185,7 @@ class SavedController extends Controller
                     'code' => 401,
                     'status' => 'error',
                     'message' => 'Token Expired'
-
-                ]);
+                ], 401);
             } else {
                 // mengeluarkan data cart
                 $user_id        = $checkAuth->tokenable_id;
@@ -186,7 +204,7 @@ class SavedController extends Controller
                         'code' => 400,
                         'status' => 'error',
                         'message' => 'Product not found'
-                    ]);
+                    ], 400);
                 }
             }
         }
