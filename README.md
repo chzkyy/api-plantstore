@@ -7,11 +7,21 @@
 4. Salin file `.env.example` dan ubah namanya menjadi `.env`
 5. Generate key aplikasi: `php artisan key:generate`
 6. Konfigurasi koneksi database di file `.env`
-7. Pada file `.env` tambahkan 
+
+        DB_CONNECTION=mysql
+        DB_HOST=127.0.0.1
+        DB_PORT=3306
+        DB_DATABASE=plantstore
+        DB_USERNAME=root
+        DB_PASSWORD=
+      
+8. Pada file `.env` tambahkan
+   
         PLANTSTORE_PASSWORD=
-8. Jalankan migrasi database: `php artisan migrate`
-9. Jalankan seeder dengan menggunakan perintah `php artisan db:seed`
-10. Jalankan server pengembangan: `php artisan serve`
+      
+9. Jalankan migrasi database: `php artisan migrate`
+10. Jalankan seeder dengan menggunakan perintah `php artisan db:seed`
+11. Jalankan server pengembangan: `php artisan serve`
 
 ## Dokumentasi API
 
