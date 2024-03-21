@@ -13,7 +13,9 @@ class ClientCredentialsController extends Controller
     public function createCCredentials(Request $request)
     {
         // add authorization
-        $auth = base64_encode('PlantStore:'. sha1('pl4ntst0r3'));
+        //ambil password dari env
+        $password = env('PLANTSTORE_PASSWORD');
+        $auth = base64_encode('PlantStore:'. sha1($password));
 
         // create body dari request privy
         $body = [
