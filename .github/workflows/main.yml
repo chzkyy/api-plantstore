@@ -21,3 +21,4 @@ jobs:
         password: ${{ secrets.FTP_PASS }}
         protocol: ftps
         port: 21
+        timeout: 600000
