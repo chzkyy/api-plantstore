@@ -7,6 +7,7 @@
     use App\Http\Controllers\OrderController;
     use App\Http\Controllers\ProductController;
     use App\Http\Controllers\SavedController;
+use App\Http\Controllers\UserController;
 use App\Models\AccessToken;
 use Illuminate\Http\Request;
     use Illuminate\Support\Facades\Route;
